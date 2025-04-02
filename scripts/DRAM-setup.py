@@ -184,4 +184,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     args_dict = {i: j for i, j in vars(args).items() if i != 'func'}
+    
+    # Filter out problematic arguments when calling set_database_paths
+    if hasattr(args, 'func') and args.func == set_database_paths:
+        # Remove 'camper_tar_gz_loc' from args_dict before passing to the function
+        if 'camper_tar_gz_loc' in args_dict:
+            print("Warning: Removing 'camper_tar_gz_loc' from arguments to avoid TypeError")
+            del args_dict['camper_tar_gz_loc']
+    
     args.func(**args_dict)
